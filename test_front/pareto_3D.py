@@ -1,13 +1,11 @@
-from flask import Flask, render_template, request, send_file
+# Importation des bibliothèques nécessaires
+from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
-from io import BytesIO
-import base64
-
-app = Flask(__name__)
 
 # Fonction qui obtient les points de Pareto
-def pareto_simple(Points):
+def pareto_3D(Points):
     # Crée un ensemble pour stocker les points de Pareto
     points_de_pareto = set()
     # Initialise le numéro de ligne du candidat à 0
@@ -59,49 +57,25 @@ def pareto_simple(Points):
 def domine(ligne, ligne_candidat):
     return sum([ligne[x] >= ligne_candidat[x] for x in range(len(ligne))]) == len(ligne)
 
+# Placez votre ensemble de points ici
+# Exemples de points
+Points = [[97, 23, 25], [55, 77, 35], [34, 76, 29], [80, 60, 42], [99, 4, 28], [81, 5, 76], [5, 81, 56], [30, 79, 24], [15, 80, 42], [70, 65, 74], [90, 40, 36], [40, 30, 94], [30, 40, 5], [20, 60, 42], [60, 50, 4], [20, 20, 49], [30, 1, 73], [60, 40, 55], [70, 25, 42], [44, 62, 37], [55, 55, 49], [55, 10, 18], [15, 45, 72], [83, 22, 29], [76, 46, 10], [56, 32, 27], [45, 55, 88], [10, 70, 26], [10, 30, 44], [79, 50, 40]]
+#Points = [[97, 23, 25], [55, 77, 35],[34, 76, 29], [99, 4, 28]]
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    if request.method == 'POST':
-        # Récupérer les données du formulaire
-        input_data = request.form['points']
-        print(input_data)
-        
-        # Diviser les lignes en un tableau
-        lines = input_data.split('\n')
-        
-        # Traiter les données pour obtenir un tableau NumPy
-        points = []
-        for line in lines:
-            # Ignorer les lignes vides
-            if line.strip():
-                values = list(map(int, line.split(",")))
-                if len(values) == 3:  # Assurez-vous que le nombre de colonnes est correct
-                    points.append(values)
+points_de_pareto, points_dominants = pareto_3D(Points)
 
-        if len(points) < 3:
-            return "Veuillez entrer au moins trois points valides."
+# Tracé du front de Pareto en 3D
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+points_dominants_array = np.array(list(points_dominants))
+points_de_pareto_array = np.array(list(points_de_pareto))
+plt.title('Front de Pareto')
+ax.scatter(points_dominants_array[:,0], points_dominants_array[:,1], points_dominants_array[:,2], color='red')
+ax.scatter(points_de_pareto_array[:,0], points_de_pareto_array[:,1], points_de_pareto_array[:,2], color='green')
 
-        points = np.array(points)
-        points_de_pareto, _ = pareto_simple(points)
+print(points_dominants_array)
 
-        # Tracer le front de Pareto
-        fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
-        ax.scatter(*points_de_pareto.T, color='green', label='Front de Pareto')
-        ax.set_xlabel('X')
-        ax.set_ylabel('Y')
-        ax.set_zlabel('Z')
 
-        # Convertir le graphique en une image
-        img_data = BytesIO()
-        plt.savefig(img_data, format='png')
-        img_data.seek(0)
-        img_base64 = base64.b64encode(img_data.read()).decode()
-        img_url = f'data:image/png;base64,{img_base64}'
 
-        return render_template('result3D.html', img_url=img_url)
 
-    return render_template('index3D.html')
-
-if __name__ == '__main__':
-    app.run(debug=True)
+plt.show()

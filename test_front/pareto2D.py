@@ -29,7 +29,6 @@ def index():
     if request.method == 'POST':
         # Récupérer les données du formulaire
         input_data = request.form['points']
-        
         # Diviser les lignes en un tableau
         lines = input_data.split('\n')
         
@@ -71,8 +70,8 @@ def index():
         img_data.seek(0)
         img_base64 = base64.b64encode(img_data.read()).decode()
         img_url = f'data:image/png;base64,{img_base64}'
-        return render_template('/result.html', img_url=img_url , points_pareto = front_pareto)
-    return render_template('index.html')
+        return render_template('/result2D.html', img_url=img_url , points_pareto = front_pareto)
+    return render_template('index2D.html')
 
 
 if __name__ == '__main__':

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Résultat Front de Pareto</title>
+</head>
+<body>
+    <h1>Résultat Front de Pareto</h1>
+    <img src="{{ img_url }}" alt="Graphique 1" width="600" height="400">
+    <img src="{{ img_url2 }}" alt="Graphique 2" width="600" height="400">
+    
+    <h2>Points du Front de Pareto</h2>
+    <table>
+        <tr>
+            <th>Axe x</th>
+            <th>Axe y</th>
+        </tr>
+        {% for point in points_pareto %}
+        <tr>
+            <td>{{ point[0] }}</td>
+            <td>{{ point[1] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
