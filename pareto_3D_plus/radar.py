@@ -1,7 +1,7 @@
 import random
 import numpy as np
 import matplotlib.pyplot as plt
-from clustering import Clustering
+from sklearn.manifold import TSNE
 
 class Radar:
 
@@ -36,20 +36,27 @@ class Radar:
             for point in sublist:
                 ax.plot(label_placement, point)
             ax.legend(labels=[f"Point{(i - 2) * 5 + j + 1}" for j in range(len(sublist))], loc='lower right', fontsize=5)
-        fig.suptitle('Compare pareto front Point', fontsize=22)
+        fig.suptitle('Graphique Radar', fontsize=22)
         plt.savefig('static/radar_chart.png')  # Sauvegarder le graphique comme fichier image
         plt.show()
 
-if __name__ == "__main__":
-    # Utilisation
-    bruit = 0.1
-    dimension = 5
-    valeur_inf = 1
-    valeur_sup = 10
-    nb_points = 100
-    n_clusters = 5
+    def tsne(points):
 
-    clustering_result = Clustering(bruit, dimension, valeur_inf, valeur_sup, nb_points, n_clusters).clusteriser()
-    closest_points, labels = clustering_result
+        fig = plt.figure(figsize=(8, 8))
+        # Appliquer t-SNE
+        tsne = TSNE(n_components=2,perplexity=5, random_state=42)
+        print("points", points)
+        embedded_data = tsne.fit_transform(points)
+        print("embedded", embedded_data)
 
-    Radar.vue_radar(closest_points)
+        plt.scatter(embedded_data[:, 0], embedded_data[:, 1])
+        plt.title('Visualisation t-SNE "2D"')
+        plt.xlabel('Dimension 1')
+        plt.ylabel('Dimension 2')
+        
+        # Sauvegarder le graphique comme fichier image
+        plt.savefig('static/radar_chart.png')  
+        plt.show()
+
+
+

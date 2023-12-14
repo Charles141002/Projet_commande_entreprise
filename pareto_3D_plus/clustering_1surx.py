@@ -3,10 +3,10 @@ import numpy as np
 from sklearn.cluster import KMeans
 
 
-class Clustering :
+class Clustering1surX :
 
     def __init__(self, bruit, dimension, valeur_inf, valeur_sup, nb_points, n_clusters):
-        self.liste_points_pareto = FrontPareto(bruit, dimension, valeur_inf, valeur_sup, nb_points).findParetoPoints()
+        self.liste_points_pareto = FrontPareto(bruit, dimension, valeur_inf, valeur_sup, nb_points).findParetoPoints_1surx()
         self.n_clusters = n_clusters
 
     def clusteriser(self):
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     nb_points = 100
     n_clusters = 3
 
-    clustering_result = Clustering(bruit, dimension, valeur_inf, valeur_sup, nb_points, n_clusters).clusteriser()
+    clustering_result = Clustering1surX(bruit, dimension, valeur_inf, valeur_sup, nb_points, n_clusters).clusteriser()
     closest_points, labels = clustering_result
 
     print(closest_points)

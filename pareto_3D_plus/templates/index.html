@@ -3,23 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clustering Radar Chart</title>
+    <title>Visualisation d'un front de Pareto avec Clusterisation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Clustering Radar Chart</h1>
+    <h1>Visualisation d'un front de Pareto avec Clusterisation</h1>
     <form method="post">
-        <label for="bruit">Bruit:</label>
-        <input type="text" name="bruit" required><br>
         <label for="dimension">Dimension:</label>
         <input type="text" name="dimension" required><br>
-        <label for="valeur_inf">Valeur Inférieure:</label>
-        <input type="text" name="valeur_inf" required><br>
-        <label for="valeur_sup">Valeur Supérieure:</label>
-        <input type="text" name="valeur_sup" required><br>
         <label for="nb_points">Nombre de Points:</label>
         <input type="text" name="nb_points" required><br>
         <label for="n_clusters">Nombre de Clusters:</label>
         <input type="text" name="n_clusters" required><br>
+        <label for="choixMultiple">Sélectionnez une ou plusieurs options :</label>
+        <select id="choixMultiple" name="choixMultiple" multiple>
+            <option value="random">Points random</option>
+            <option value="1surx">Points 1/x</option>
+        </select>
+        <select id="choixPresentation" name="choixPresentation" multiple>
+            <option value="tsne">Vsion 2D avec TSNE</option>
+            <option value="radar">Vision Radar</option>
+        </select>
         <input type="submit" value="Soumettre">
     </form>
 </body>
